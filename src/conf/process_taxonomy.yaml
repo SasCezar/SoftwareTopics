@@ -8,7 +8,6 @@ defaults:
 gitranking_path: ${raw_data}/gitranking.jsonl
 redo: False
 
-
 hydra:
   launcher:
     n_jobs: 8

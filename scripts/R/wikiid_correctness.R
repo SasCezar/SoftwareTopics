@@ -2,7 +2,7 @@ library(ggplot2)
 library(dplyr)
 library(forcats)
 
-df <- read.csv('/home/sasce/Downloads/SoftwareTopics/scripts/R/cso_wikiid_correctness.csv')
+df <- read.csv('~/PycharmProjects/SoftwareTopics/scripts/R/cso_wikiid_correctness.csv')
 
 df <- df %>% 
   mutate(Percent=Value,Percent=scales::percent(Value, accuracy = 1L))  %>%
@@ -16,5 +16,5 @@ ggplot(df, aes(x = Threshold, y = Value, fill = Metric, label=Value)) +
   theme(legend.position = "top")
   
 
-ggsave('/home/sasce/Downloads/SoftwareTopics/report/plots/wikiid_correctness.pdf', 
+ggsave('~/PycharmProjects/SoftwareTopics/report/plots/wikiid_correctness.pdf', 
        width = 10, height = 5)

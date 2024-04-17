@@ -38,7 +38,7 @@ for (t in targets) {
   
   df <-
     read.csv(
-      '/home/sasce/Downloads/SoftwareTopics/data/interim/taxonomy/cso_processed/melted_metrics.csv'
+      '~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/cso_processed/melted_metrics.csv'
     )
   
   df <- df %>%
@@ -82,7 +82,7 @@ for (t in targets) {
   
   df <-
     read.csv(
-      '/home/sasce/Downloads/SoftwareTopics/data/interim/taxonomy/wikidata_processed/melted_metrics.csv'
+      '~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/wikidata_processed/melted_metrics.csv'
     )
   
   df$Types_Threshold <- as.factor(df$Types_Threshold)
@@ -130,7 +130,7 @@ for (t in targets) {
   
   df <-
     read.csv(
-      '/home/sasce/Downloads/SoftwareTopics/data/interim/taxonomy/LLM_processed/melted_metrics.csv'
+      '~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/LLM_processed/melted_metrics.csv'
     )
   
   df <- df %>%
@@ -175,7 +175,7 @@ for (t in targets) {
   
   df <-
     read.csv(
-      '/home/sasce/Downloads/SoftwareTopics/data/interim/taxonomy/LLM_Iter_processed/melted_metrics.csv'
+      '~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/LLM_Iter_processed/melted_metrics.csv'
     )
   
   df <- df %>%
@@ -251,7 +251,7 @@ for (t in targets) {
   
   ggsave(
     sprintf(
-      '/home/sasce/Downloads/SoftwareTopics/report/plots/models_%s.pdf',
+      '~/PycharmProjects/SoftwareTopics/report/plots/models_%s.pdf',
       t
     ),
     width = 9,

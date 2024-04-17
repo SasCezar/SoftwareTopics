@@ -30,7 +30,7 @@ evaluate_taxonomies:
 	${PYTHON} src/pipeline/evaluation_metrics.py hydra.launcher.n_jobs=1
 
 inter_model:
-	${PYTHON} src/pipeline/inter_models_eval.py hydra.launcher.n_jobs=1
+	${PYTHON} src/pipeline/inter_models_eval.py
 
 evaluate: evaluate_taxonomies inter_model
 
@@ -51,4 +51,4 @@ intersections:
 	Rscript scripts/R/.R
 
 
-plots: metrics correctness intersections corr_heatmap
+plots: metrics correctness corr_heatmap

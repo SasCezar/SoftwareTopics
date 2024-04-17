@@ -3,6 +3,7 @@ from pathlib import Path
 import pandas as pd
 from tqdm import tqdm
 import pingouin as pg
+import os
 
 
 def compute_correlations():
@@ -10,8 +11,9 @@ def compute_correlations():
     folders = list(path.iterdir())
 
     for folder in folders:
-        files = [x for x in folder.iterdir() if
-                 'metrics.csv' in str(x) and 'melted' not in x.stem and 'processed' in folder.stem]
+        if not folder.is_dir():
+            continue
+        files = [x for x in folder.iterdir() if 'metrics.csv' in str(x) and 'melted' not in x.stem and 'processed' in folder.stem]
         for file in tqdm(files, desc=folder.stem):
             df = pd.read_csv(file)
             """Remove all rows where the following columns are not 0: cycle,bridge,abstract,minimization"""

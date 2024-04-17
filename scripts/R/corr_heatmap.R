@@ -9,7 +9,7 @@ library(cowplot)
 library(purrr)
 library(stringr)
 
-df <- read.csv('/home/sasce/Downloads/SoftwareTopics/data/interim/taxonomy/wikidata_processed/metrics_correlation_postprocessing.csv')
+df <- read.csv('~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/wikidata_processed/metrics_correlation_postprocessing.csv')
 
 x_vars <- c("\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc")
 remove <- c("Max Children", "\\# Parents", "\\# Children", "Is DAG", 'Types Threshold', "Take All", 'Max Depth', "LLM", 'Sim Threshold', "Max Parents")
@@ -37,10 +37,10 @@ ggplot(df, aes(X, Y, fill= correlation)) +
         legend.position="none")  +
   guides(x =  guide_axis(angle = 45)) 
 
-ggsave('/home/sasce/Downloads/SoftwareTopics/report/plots/wiki_pp_correlation_heatmap.pdf', width=9, height=4)
+ggsave('~/PycharmProjects/SoftwareTopics/report/plots/wiki_pp_correlation_heatmap.pdf', width=9, height=4)
 
 
-df <- read.csv('/home/sasce/Downloads/SoftwareTopics/data/interim/taxonomy/cso_processed/metrics_correlation_postprocessing.csv')
+df <- read.csv('~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/cso_processed/metrics_correlation_postprocessing.csv')
 
 x_vars <- c("\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", 'Pairs Acc')
 remove <- c("Max Children", "\\# Parents", "\\# Children", "Is DAG", 'Types Threshold', "Take All", 'Max Depth', "LLM", 'Sim Threshold', "Max Parents")
@@ -70,4 +70,4 @@ ggplot(df, aes(X, Y, fill= correlation)) +
 
 
 
-ggsave('/home/sasce/Downloads/SoftwareTopics/report/plots/cso_pp_correlation_heatmap.pdf', width=9, height=4)
+ggsave('~/PycharmProjects/SoftwareTopics/report/plots/cso_pp_correlation_heatmap.pdf', width=9, height=4)

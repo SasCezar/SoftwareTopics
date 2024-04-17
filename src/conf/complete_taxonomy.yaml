@@ -5,7 +5,6 @@ defaults:
   - completion: llm
   - override hydra/launcher: joblib
 
-
 gitranking_path: ${raw_data}/gitranking.jsonl
 redo: False
 
