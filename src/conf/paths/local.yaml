@@ -1,0 +1,6 @@
+# @package _global_
+base: ~/PycharmProjects/SoftwareTopics
+data: ${base}/data
+raw_data: ${data}/raw
+interim_data: ${data}/interim
+taxonomy_folder: ${interim_data}/taxonomy

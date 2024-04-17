@@ -1,0 +1,5 @@
+_target_: completion.wikidata.WikidataCompletion
+take_all: False
+types_path: ${interim_data}/wikidata_types.csv
+type_threshold: 5
+max_depth: 2

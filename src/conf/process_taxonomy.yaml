@@ -1,0 +1,14 @@
+# @package _global_
+defaults:
+  - _self_
+  - paths: local
+  - processing/default
+  - override hydra/launcher: joblib
+
+gitranking_path: ${raw_data}/gitranking.jsonl
+redo: False
+
+
+hydra:
+  launcher:
+    n_jobs: 8

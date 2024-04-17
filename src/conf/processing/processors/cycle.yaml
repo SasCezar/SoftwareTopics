@@ -1,0 +1,2 @@
+cycle:
+  _target_: processing.cycle.CycleRemovalProcessing

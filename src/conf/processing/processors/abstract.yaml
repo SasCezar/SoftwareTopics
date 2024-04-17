@@ -1,0 +1,4 @@
+abstract:
+  _target_: processing.abstract.AbstractTermsRemovalProcessing
+  ranked_terms_path: ${raw_data}/mean_std_ranking.csv
+  level: 1

@@ -1,0 +1,2 @@
+bridge:
+  _target_: processing.bridge.BridgeRemovalProcessing

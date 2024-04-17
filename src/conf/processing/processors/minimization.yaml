@@ -1,0 +1,2 @@
+minimization:
+  _target_: processing.minimization.ExtraTermRemovalProcessing

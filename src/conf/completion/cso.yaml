@@ -1,0 +1,4 @@
+_target_: completion.cso.CSOCompletion
+cso_path: ${raw_data}/CSO.3.3.nt
+sentence_transformer: 'all-mpnet-base-v2'
+threshold: 0.9

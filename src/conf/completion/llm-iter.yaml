@@ -1,0 +1,3 @@
+_target_: completion.llm_iter.LLMIterCompletion
+model: gpt-3.5-turbo
+prompt_type: simple
