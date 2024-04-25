@@ -36,8 +36,8 @@ class Taxonomy(BaseModel):
         return taxonomy
 
     def update(self):
-        self.terms = list(flatten(self.pairs))
-        self.missing = list(set(self.gitranking_qid.keys()) - set(flatten(self.pairs)))
+        self.terms = list(set(flatten([x[:2] for x in self.pairs])))
+        self.missing = list(set(self.gitranking_qid.keys()) - set(self.terms))
         return Taxonomy.compute_stats(self)
 
     @staticmethod

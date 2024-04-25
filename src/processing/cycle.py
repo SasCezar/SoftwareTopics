@@ -38,10 +38,14 @@ class CycleRemovalProcessing(AbstractProcessing):
         for loop_edge in removed:
             self.graph.remove_edge(*loop_edge)
 
+        inverse_exists = [int(self.graph.has_edge(b, a)) for a, b in removed]
+        percentage = sum(inverse_exists) / (len(inverse_exists)+1) * 100
+        removed = [[a, b, z] for (a, b), z in zip(removed, inverse_exists)]
         taxonomy.post_process['cycle'] = removed
+        taxonomy.post_process['percent_inverse'] = percentage
         taxonomy.pairs = [(a, b, name) for a, b, name in taxonomy.pairs if (a, b) in self.graph.edges]
 
-        # TODO: Fix stats and other attributes
+        taxonomy = taxonomy.update()
         return taxonomy
 
     def distance(self, root, node):

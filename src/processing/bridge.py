@@ -27,6 +27,8 @@ class BridgeRemovalProcessing(AbstractProcessing):
         assert len(bridge_nodes) == 0
         pairs = list(self.graph.edges)
         taxonomy.pairs = [(a, b, name) for a, b in pairs]
+
+        taxonomy = taxonomy.update()
         return taxonomy
 
     def get_bridges(self, taxonomy):

@@ -39,6 +39,8 @@ evaluate: evaluate_taxonomies inter_model
 
 metrics:
 	Rscript scripts/R/metrics.R
+
+grouped_metrics:
 	Rscript scripts/R/grouped_metrics.R
 
 correctness:

@@ -18,7 +18,7 @@ def initialize_postprocessing(processing) -> List[AbstractProcessing]:
 @hydra.main(version_base='1.3', config_path="../conf", config_name="process_taxonomy")
 def process_taxonomy(cfg: DictConfig):
     print(cfg)
-    path = Path('data/interim/taxonomy')
+    path = Path(cfg.taxonomy_folder)
     folders = [x for x in path.iterdir() if 'processed' not in str(x) and x.is_dir()]
     for folder in tqdm(folders):
         files = [x for x in folder.iterdir() if x.suffix == '.json']

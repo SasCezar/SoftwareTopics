@@ -27,5 +27,5 @@ class ExtraTermRemovalProcessing(AbstractProcessing):
         src = taxonomy.pairs[0][0]
         taxonomy.pairs = [(a, b, src) for a, b in self.graph.edges]
         taxonomy.terms = list(set(flatten(taxonomy.pairs)))
-
+        taxonomy = taxonomy.update()
         return taxonomy

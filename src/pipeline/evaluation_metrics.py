@@ -99,6 +99,25 @@ def compute_metrics(cfg: DictConfig):
                          value_vars=metrics_name,
                          var_name='Metric', value_name='Value')
         melted.to_csv(folder / 'melted_metrics.csv', index=False)
+        df = melted
+        if not 'processed' in folder.stem:
+            continue
+        df['post_process_list'] = df[pp_names].values.tolist()
+        df['pp_name'] = df['post_process_list'].apply(
+            lambda x: "_".join([pp_names[i] for i, k in enumerate(x) if bool(int(k))]))
+        df['num_pp'] = df[pp_names].astype(int).sum(axis=1)
+        df.drop(df[df['num_pp'] > 1].index, inplace=True)
+        df['is_pp'] = df['num_pp'] > 0
+        df.drop(columns=pp_names, inplace=True)
+        df.drop(columns=['num_pp', 'post_process_list'], inplace=True)
+        res = [df]
+        for pp in pp_names:
+            no_pp = df[df['is_pp'] == 0].copy(deep=True)
+            no_pp['pp_name'] = pp
+            res.append(no_pp)
+        df.drop(df[df['pp_name'] == ''].index, inplace=True)
+        df = pd.concat(res)
+        df.to_csv(folder / 'extra_melted_metrics.csv', index=False)
 
 
 if __name__ == '__main__':

@@ -257,16 +257,4 @@ for (t in targets) {
     width = 9,
     height = 10
   )
-  
-  
-  #g <- ggarrange(cso, wiki, llm, llm_iter,ncol=1, common.legend = TRUE, legend="right")
-  
-  #  g <- annotate_figure(g, top = text_grob(t))
-  
-  # plot(g)
-  
-  #combined <-
-  #  cso + wiki + llm + llm_iter & theme(legend.position = "bottom")
-  #combined + plot_layout(guides = "collect")
-  #plot(combined)
 }

@@ -30,10 +30,12 @@ class AbstractTermsRemovalProcessing(AbstractProcessing):
                 if ancestor in taxonomy.gitranking_qid or in_git:
                     continue
                 remove_ancestors.append(ancestor)
-        taxonomy.post_process['removed_ancestors'] = remove_ancestors
+        taxonomy.post_process['removed_ancestors'] = sorted(list(set(remove_ancestors)))
+        taxonomy.post_process['num_removed'] = len(set(remove_ancestors))
         taxonomy.post_process['skipped'] = skipped
         logger.info(f"Removed {len(remove_ancestors)} ancestors and skipped {len(skipped)} terms")
         taxonomy.pairs = [(term, parent, name) for term, parent, name in taxonomy.pairs if term not in remove_ancestors]
+        taxonomy = taxonomy.update()
         return taxonomy
 
     def load_clusters(self, ranked_terms_path):

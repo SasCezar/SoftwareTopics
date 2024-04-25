@@ -1,19 +1,17 @@
 from pathlib import Path
 
 import pandas as pd
-from tqdm import tqdm
 import pingouin as pg
-import os
+from tqdm import tqdm
 
 
 def compute_correlations():
     path = Path('../../data/interim/taxonomy')
-    folders = list(path.iterdir())
+    folders = [folder for folder in path.iterdir() if folder.is_dir()]
 
     for folder in folders:
-        if not folder.is_dir():
-            continue
-        files = [x for x in folder.iterdir() if 'metrics.csv' in str(x) and 'melted' not in x.stem and 'processed' in folder.stem]
+        files = [x for x in folder.iterdir() if
+                 'metrics.csv' in str(x) and 'melted' not in x.stem and 'processed' in folder.stem]
         for file in tqdm(files, desc=folder.stem):
             df = pd.read_csv(file)
             """Remove all rows where the following columns are not 0: cycle,bridge,abstract,minimization"""
@@ -23,7 +21,6 @@ def compute_correlations():
             """Correlation matrix"""
             corr = df.apply(lambda x: pd.factorize(x)[0]).corr()
             """Convert the correlation matrix to a dataframe X, Y, correlation"""
-            # corr = corr.stack().reset_index()
             corr = corr.reset_index().melt(id_vars='index')
             corr.columns = ['X', 'Y', 'correlation']
             """Save the correlation matrix"""
@@ -50,8 +47,6 @@ def compute_correlations():
                     rows.append([metric, process, corr])
             print(corr)
             """Convert the correlation matrix to a dataframe X, Y, correlation"""
-            # corr = corr.reset_index().melt(id_vars='index')
-            # corr.columns = ['X', 'Y', 'correlation']
             corr = pd.DataFrame(rows, columns=['X', 'Y', 'correlation'])
             """Save the correlation matrix"""
             corr.to_csv(file.parent / f'{file.stem}_correlation_postprocessing.csv', index=False)

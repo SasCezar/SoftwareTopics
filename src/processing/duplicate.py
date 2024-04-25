@@ -25,4 +25,5 @@ class DuplicateRemovalProcessing(AbstractProcessing):
         ## Get the indices of the duplicates
         duplicates = [(taxonomy.terms[i], taxonomy.terms[j]) for i, j in zip(*duplicates)]
         # Join the duplicates
+        taxonomy = taxonomy.update()
         return taxonomy
