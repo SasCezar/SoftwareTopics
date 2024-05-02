@@ -14,15 +14,17 @@ class BridgeRemovalProcessing(AbstractProcessing):
 
         bridge_nodes = self.get_bridges(taxonomy)
         print(len(bridge_nodes))
-        taxonomy.post_process['bridge_removed'] = bridge_nodes
+        bridge_pairs = []
         while bridge_nodes:
             for node in bridge_nodes:
                 pred = list(self.graph.predecessors(node))[0]
                 succ = list(self.graph.successors(node))[0]
                 self.graph.remove_node(node)
                 self.graph.add_edge(pred, succ)
+                bridge_pairs.append([pred, node, succ])
                 bridge_nodes = self.get_bridges(taxonomy)
 
+        taxonomy.post_process['bridge_removed'] = bridge_pairs
         bridge_nodes = self.get_bridges(taxonomy)
         assert len(bridge_nodes) == 0
         pairs = list(self.graph.edges)

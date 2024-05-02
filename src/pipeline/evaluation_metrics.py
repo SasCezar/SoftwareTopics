@@ -1,4 +1,3 @@
-import json
 from pathlib import Path
 
 import hydra
@@ -8,6 +7,7 @@ from loguru import logger
 from omegaconf import DictConfig
 from tqdm import tqdm
 
+from entity import Taxonomy
 from metrics import GraphMetrics, SemanticMetrics
 
 
@@ -34,7 +34,7 @@ def compute_metrics(cfg: DictConfig):
     pairs_pred_path = f'{cfg.data}/result/pairs_llm_results.csv'
     eval_functions = [GraphMetrics(), SemanticMetrics(pairs_pred_path=pairs_pred_path)]
     metrics_rename = {}
-
+    taxo_stats = {'num_unique_missing': 'Missing'}
     for function in eval_functions:
         metrics_rename.update(function.columns_rename)
 
@@ -43,25 +43,29 @@ def compute_metrics(cfg: DictConfig):
         metrics = []
         for file in tqdm(files, desc=folder.stem):
             pp = {'cycle': 0, 'bridge': 0, 'abstract': 0, 'minimization': 0}
-            with open(file, 'r') as f:
-                taxonomy = json.load(f)
-                pairs = [(x[0], x[1]) for x in taxonomy['pairs']]
-                g = nx.DiGraph()
-                g.add_edges_from(pairs)
-                row = format_params(taxonomy['other']['params'])
-                logger.info(f"Processing {file.stem}")
-                if 'processed' in folder.stem:
-                    pp.update(taxonomy['other']['post_processing'])
-                    pp = {x: str(y) for x, y in pp.items()}
-                    row.update(pp)
-                    row.update()
-                for function in eval_functions:
-                    logger.info(f"Processing {function}")
-                    row.update(function.metrics(g))
-                metrics.append(row)
+
+            taxonomy = Taxonomy.load(file)
+            taxonomy = taxonomy.update()
+            pairs = [(x[0], x[1]) for x in taxonomy.pairs]
+            g = nx.DiGraph()
+            g.add_edges_from(pairs)
+            row = format_params(taxonomy.other['params'])
+            logger.info(f"Processing {file.stem}")
+            if 'processed' in folder.stem:
+                pp.update(taxonomy.other['post_processing'])
+                pp = {x: str(y) for x, y in pp.items()}
+                row.update(pp)
+                row.update()
+            for function in eval_functions:
+                logger.info(f"Processing {function}")
+                row.update(function.metrics(g))
+            for stat, map in taxo_stats.items():
+                row.update({map: taxonomy.dict()[stat]})
+                metrics_rename.update({map: map})
+            metrics.append(row)
 
         df = pd.DataFrame(metrics)
-        df.sort_values(by=list(format_params(taxonomy['other']['params']).keys()), ascending=True, inplace=True)
+        df.sort_values(by=list(format_params(taxonomy.other['params']).keys()), ascending=True, inplace=True)
 
         if 'Sim Threshold' in df.columns:
             df['Sim Threshold'] = df['Sim Threshold'].astype(float)
@@ -83,8 +87,8 @@ def compute_metrics(cfg: DictConfig):
         df.to_csv(folder / 'metrics.csv', index=False)
 
         metrics_name = [x for x in metrics_rename.values() if x in df.columns]
-        header_order = list(format_params(taxonomy['other']['params']).keys()) + pp_names + metrics_name
-        df.sort_values(by=list(format_params(taxonomy['other']['params']).keys()) + pp_names, ascending=True,
+        header_order = list(format_params(taxonomy.other['params']).keys()) + pp_names + metrics_name
+        df.sort_values(by=list(format_params(taxonomy.other['params']).keys()) + pp_names, ascending=True,
                        inplace=True)
 
         df = df[header_order]
@@ -92,9 +96,10 @@ def compute_metrics(cfg: DictConfig):
                     escape=False, float_format="{:.2f}".format,
                     header=['\\rot{{' + x + '}}' for x in df.columns])
 
-        id_vars = list(format_params(taxonomy['other']['params']).keys()) + pp_names
+        id_vars = list(format_params(taxonomy.other['params']).keys()) + pp_names
         header_rename = {x: str(x).replace(" ", "_") for x in id_vars}
         df.rename(columns=header_rename, inplace=True)
+
         melted = df.melt(id_vars=header_rename.values(),
                          value_vars=metrics_name,
                          var_name='Metric', value_name='Value')

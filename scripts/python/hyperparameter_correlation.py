@@ -43,11 +43,12 @@ def compute_correlations():
                     others = [x for x in processing if x != process]
                     df_copy['total'] = df_copy[others].sum(axis=1)
                     df_copy = df_copy[df_copy['total'] == 0]
-                    corr = pg.corr(x=df_copy[process], y=df_copy[metric], method='pearson')['r'][0]
+                    corr = pg.corr(x=df_copy[process], y=df_copy[metric], method='pearson')['r']['pearson']
                     rows.append([metric, process, corr])
             print(corr)
             """Convert the correlation matrix to a dataframe X, Y, correlation"""
-            corr = pd.DataFrame(rows, columns=['X', 'Y', 'correlation'])
+            corr = pd.DataFrame(rows, columns=['Metric', 'pp_name', 'correlation'])
+            corr.fillna(0, inplace=True)
             """Save the correlation matrix"""
             corr.to_csv(file.parent / f'{file.stem}_correlation_postprocessing.csv', index=False)
 
