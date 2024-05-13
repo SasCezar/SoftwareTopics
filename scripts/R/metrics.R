@@ -69,9 +69,7 @@ target <- c("\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  
 
 df <- df %>% 
   filter(Metric %in% target) %>%
-  mutate_at(c('Value'), as.numeric)
-
-df <- df %>%
+  mutate_at(c('Value'), as.numeric) %>%
   unite("processing", cycle:bridge:abstract:minimization, remove = FALSE, sep=', ') %>%
   mutate(Metric = fct_relevel(Metric, "\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "Missing")) %>%
   mutate(Metric = gsub(r"(\\)", "", Metric)) %>%

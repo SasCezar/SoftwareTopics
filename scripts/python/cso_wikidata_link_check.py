@@ -5,7 +5,6 @@ import numpy
 from more_itertools import flatten
 from rdflib import Graph
 from sentence_transformers import SentenceTransformer
-from torch.nn import CosineSimilarity
 from tqdm import tqdm
 from wikidata.client import Client
 

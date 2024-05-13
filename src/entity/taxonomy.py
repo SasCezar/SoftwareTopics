@@ -30,7 +30,7 @@ class Taxonomy(BaseModel):
         taxonomy.num_terms = len(taxonomy.terms)
         taxonomy.num_pairs = len(taxonomy.pairs)
         taxonomy.num_missing = len(taxonomy.missing)
-        taxonomy.num_unique_terms = len(set(taxonomy.terms) | set(flatten(taxonomy.pairs)))
+        taxonomy.num_unique_terms = len(set(taxonomy.terms) | set(flatten([x[:2] for x in taxonomy.pairs])))
         taxonomy.num_unique_pairs = len(set([tuple(x) for x in taxonomy.pairs]))
         taxonomy.num_unique_missing = len(set(taxonomy.missing))
         return taxonomy

@@ -27,6 +27,8 @@ inflect = "^7.0.0"
 sentence-transformers = "^2.3.1"
 pydantic = "^2.6.4"
 hydra-joblib-launcher = "^1.2.0"
+torchmetrics = "^1.4.0"
+rapidfuzz = "^3.9.0"
 
 [tool.poetry.group.dev.dependencies]
 notebook = "^6.5.4"

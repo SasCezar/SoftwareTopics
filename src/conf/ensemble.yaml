@@ -1,0 +1,11 @@
+# @package _global_
+defaults:
+  - _self_
+  - paths: local
+  - ensemble: cascade
+
+taxonomy_a: ${taxonomy_folder}/cso_processed/gitranking_cso_llm_all-MiniLM-L6-v2_sim_t_0.5_cycle.json
+taxonomy_b: ${taxonomy_folder}/wikidata_processed/gitranking_wikidata_take_all_True_type_threshold_10_max_depth_10_abstract_cycle.json
+
+
+output: ./ensemble_output.json

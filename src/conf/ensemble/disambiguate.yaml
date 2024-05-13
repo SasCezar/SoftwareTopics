@@ -1,0 +1,3 @@
+_target_: ensemble.disambiguate.DisambiguateEnsemble
+embedding_model: all-mpnet-base-v2
+threshold: 0.85

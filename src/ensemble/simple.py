@@ -2,7 +2,7 @@ from ensemble.ensemble import AbstractEnsemble
 from entity import Taxonomy
 
 
-class Simple(AbstractEnsemble):
+class SimpleEnsemble(AbstractEnsemble):
     def complete(self, taxonomy_a: Taxonomy, taxonomy_b: Taxonomy) -> Taxonomy:
         pairs_a = taxonomy_a.pairs
         pairs_b = taxonomy_b.pairs
@@ -26,5 +26,5 @@ class Simple(AbstractEnsemble):
         res.wikidata_qid.update(taxonomy_b.wikidata_qid)
         res.other['params_a'] = taxonomy_a.other['params']
         res.other['params_b'] = taxonomy_b.other['params']
-
+        res.update()
         return res
