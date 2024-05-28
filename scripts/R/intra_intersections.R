@@ -10,7 +10,10 @@ library(purrr)
 library(stringr)
 library(wesanderson)
 
-df <- read.csv('~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/intersections.csv')
+best <- 'hand'
+
+
+df <- read.csv(paste('~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/intersections_', best ,'.csv', sep = ""))
 
 df <- df %>% 
     mutate(Model1 = fct_relevel(Model1, 'CSO', 'Wiki', 'LLM', 'All')) %>%

@@ -11,7 +11,7 @@ library(stringr)
 
 df <- read.csv('~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/wikidata_processed/metrics_correlation_postprocessing.csv')
 
-x_vars <- c("\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc")
+x_vars <- c("\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc", '\\# New Terms')
 remove <- c("Max Children", "\\# Parents", "\\# Children", "Is DAG", 'Types Threshold', "Take All", 'Max Depth', "LLM", 'Sim Threshold', "Max Parents")
 
 df <- df %>%
@@ -42,8 +42,6 @@ ggsave('~/PycharmProjects/SoftwareTopics/report/plots/wiki_pp_correlation_heatma
 
 df <- read.csv('~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/cso_processed/metrics_correlation_postprocessing.csv')
 
-x_vars <- c("\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", 'Pairs Acc')
-remove <- c("Max Children", "\\# Parents", "\\# Children", "Is DAG", 'Types Threshold', "Take All", 'Max Depth', "LLM", 'Sim Threshold', "Max Parents")
 
 df <- df %>%
   filter(!X %in% remove)%>%
@@ -75,9 +73,6 @@ ggsave('~/PycharmProjects/SoftwareTopics/report/plots/cso_pp_correlation_heatmap
 
 
 df <- read.csv('~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/LLM_processed/metrics_correlation_postprocessing.csv')
-
-x_vars <- c("\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", 'Pairs Acc')
-remove <- c("Max Children", "\\# Parents", "\\# Children", "Is DAG", 'Types Threshold', "Take All", 'Max Depth', "LLM", 'Sim Threshold', "Max Parents")
 
 df <- df %>%
   filter(!X %in% remove)%>%

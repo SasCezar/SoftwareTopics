@@ -1,15 +1,18 @@
 import networkx as nx
 import numpy as np
+from tqdm import tqdm
 
 from ensemble.ensemble import AbstractEnsemble
 from entity import Taxonomy
 
 
 class CascadeEnsemble(AbstractEnsemble):
+    def __init__(self):
+        self.name = 'cascade'
+        self.params = {}
+
     def complete(self, taxonomy_a: Taxonomy, taxonomy_b: Taxonomy) -> Taxonomy:
         missing_a = taxonomy_a.missing
-        print(len(missing_a))
-        print(len(set(missing_a).intersection(set(taxonomy_b.missing))))
         allowed = set(missing_a + taxonomy_a.terms)
         pairs_b = [(a, b) for a, b, _ in taxonomy_b.pairs]
         graph = nx.DiGraph()
@@ -20,7 +23,7 @@ class CascadeEnsemble(AbstractEnsemble):
             predecessors[term] = list(nx.predecessor(graph, term))
 
         res = []
-        for term in predecessors:
+        for term in tqdm(predecessors):
             terms = predecessors[term]
             for t in terms:
                 paths = list(nx.all_simple_paths(graph, source=term, target=t))
@@ -28,7 +31,7 @@ class CascadeEnsemble(AbstractEnsemble):
                     inx = [i if t in allowed else 0 for i, t in enumerate(path)]
                     arg = np.argmax(inx)
                     path = path[:arg+1]
-                    pairs = list(zip(path[:-1], path[1:], ['cascade']*len(path)))
+                    pairs = list(zip(path[:-1], path[1:], [self.name]*len(path)))
                     res.extend(pairs)
 
         res = list(set(res))

@@ -20,7 +20,8 @@ targets <-
     "\\# Intermediate",
     "\\# Self Loops",
     "\\# Cycles",
-    'Pairs Acc'
+    'Pairs Acc',
+    '\\# New Terms'
   )
 
 pp_mask <- c('0, 0, 0, 0',

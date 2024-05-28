@@ -2,11 +2,6 @@
 defaults:
   - _self_
   - paths: local
-  - ensemble: cascade
-  - best: hand_pick
-
-ensemble_models:
-  - CSO
-  - Wiki
+  - optimizer: pareto
 
 output: ${taxonomy_folder}/ensemble/

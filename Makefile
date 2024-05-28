@@ -24,10 +24,13 @@ complete_all: complete_wiki complete_cso complete_llm complete_llm_iter
 
 complete: complete_all postprocess
 
+ensemble:
+	${PYTHON} src/pipeline/ensemble_taxonomies.py -m 'ensemble=cascade,simple,disambiguate'
 
 # Evaluation
 evaluate_taxonomies:
 	${PYTHON} src/pipeline/evaluation_metrics.py hydra.launcher.n_jobs=1
+	${PYTHON} scripts/python/hyperparameter_correlation.py
 
 inter_model:
 	${PYTHON} src/pipeline/inter_models_eval.py
@@ -36,21 +39,21 @@ evaluate: evaluate_taxonomies inter_model
 
 
 # R scripts for plots in the paper
+#
+#metrics:
+#	Rscript scripts/R/metrics.R
+#
+#grouped_metrics:
+#	Rscript scripts/R/grouped_metrics.R
+#
+#correctness:
+#	Rscript scripts/R/wikiid_correctness.R
+#
+#corr_heatmap:
+#	Rscript scripts/R/corr_heatmap.R
+#
+#intersections:
+#	Rscript scripts/R/.R
+#
 
-metrics:
-	Rscript scripts/R/metrics.R
-
-grouped_metrics:
-	Rscript scripts/R/grouped_metrics.R
-
-correctness:
-	Rscript scripts/R/wikiid_correctness.R
-
-corr_heatmap:
-	Rscript scripts/R/corr_heatmap.R
-
-intersections:
-	Rscript scripts/R/.R
-
-
-plots: metrics correctness corr_heatmap
+plots:

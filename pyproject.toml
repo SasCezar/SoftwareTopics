@@ -29,6 +29,7 @@ pydantic = "^2.6.4"
 hydra-joblib-launcher = "^1.2.0"
 torchmetrics = "^1.4.0"
 rapidfuzz = "^3.9.0"
+paretoset = "^1.2.3"
 
 [tool.poetry.group.dev.dependencies]
 notebook = "^6.5.4"

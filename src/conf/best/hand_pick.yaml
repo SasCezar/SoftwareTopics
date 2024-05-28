@@ -1,0 +1,5 @@
+name: hand
+best_models:
+  CSO: ${taxonomy_folder}/cso_processed/gitranking_cso_llm_all-MiniLM-L6-v2_sim_t_0.5_cycle.json
+  Wiki: ${taxonomy_folder}/wikidata_processed/gitranking_wikidata_take_all_True_type_threshold_10_max_depth_10_abstract_cycle.json
+  LLM: ${taxonomy_folder}/LLM_Iter_processed/gitranking_LLM_Iter_llm_gpt-4-1106-preview_prompt_type_w_taxo_.json

@@ -58,7 +58,7 @@ def compute_metrics(cfg: DictConfig):
                 row.update()
             for function in eval_functions:
                 logger.info(f"Processing {function}")
-                row.update(function.metrics(g))
+                row.update(function.metrics(g, taxonomy))
             for stat, map in taxo_stats.items():
                 row.update({map: taxonomy.dict()[stat]})
                 metrics_rename.update({map: map})

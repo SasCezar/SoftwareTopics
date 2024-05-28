@@ -11,7 +11,7 @@ library(purrr)
 df <- read.csv('~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/cso_processed/melted_metrics.csv')
 
 
-target <- c("\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", 'Pairs Acc', 'Missing')
+target <- c("\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc", '\\# New Terms')
 
 df <- df %>% 
   filter(Metric %in% target) %>%
@@ -65,13 +65,11 @@ df <- read.csv('~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/wikidata_
 df$Types_Threshold <- as.factor(df$Types_Threshold)
 df$Max_Depth <- as.factor(df$Max_Depth)
 
-target <- c("\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", 'Pairs Acc', 'Missing')
-
 df <- df %>% 
   filter(Metric %in% target) %>%
   mutate_at(c('Value'), as.numeric) %>%
   unite("processing", cycle:bridge:abstract:minimization, remove = FALSE, sep=', ') %>%
-  mutate(Metric = fct_relevel(Metric, "\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "Missing")) %>%
+  mutate(Metric = fct_relevel(Metric, "\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc", '\\# New Terms', "Missing")) %>%
   mutate(Metric = gsub(r"(\\)", "", Metric)) %>%
   mutate(processing = fct_relevel(processing, 
                                   '0, 0, 0, 0', 
@@ -110,12 +108,10 @@ ggsave('~/PycharmProjects/SoftwareTopics/report/plots/wiki_metrics_heatmap.pdf',
 df <- read.csv('~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/LLM_processed/melted_metrics.csv')
 
 
-target <- c("\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", 'Pairs Acc', 'Missing')
-
 df <- df %>% 
   filter(Metric %in% target) %>%
   unite("processing", cycle:bridge:abstract:minimization, remove = FALSE, sep=', ') %>%
-  mutate(Metric = fct_relevel(Metric, "\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "Missing")) %>%
+  mutate(Metric = fct_relevel(Metric, "\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc", '\\# New Terms', "Missing")) %>%
   mutate(Metric = gsub(r"(\\)", "", Metric)) %>%
   mutate_at(c('Value'), as.numeric) %>%
   mutate(processing = fct_relevel(processing, 
@@ -154,12 +150,10 @@ ggsave('~/PycharmProjects/SoftwareTopics/report/plots/llm_metrics_heatmap.pdf', 
 df <- read.csv('~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/LLM_Iter_processed/melted_metrics.csv')
 
 
-target <- c("\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", 'Pairs Acc', 'Missing')
-
 df <- df %>% 
   filter(Metric %in% target) %>%
   unite("processing", cycle:bridge:abstract:minimization, remove = FALSE, sep=', ') %>%
-  mutate(Metric = fct_relevel(Metric, "\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "Missing")) %>%
+  mutate(Metric = fct_relevel(Metric, "\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc", '\\# New Terms', "Missing")) %>%
   mutate(Metric = gsub(r"(\\)", "", Metric)) %>%
   mutate_at(c('Value'), as.numeric) %>%
   mutate(processing = fct_relevel(processing, 

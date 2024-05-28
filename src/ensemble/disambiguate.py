@@ -13,6 +13,7 @@ from entity import Taxonomy
 class DisambiguateEnsemble(SimpleEnsemble):
     def __init__(self, embedding_model=None, threshold=0.9):
         super().__init__()
+        self.name = 'disambiguate'
         self.embedding = SentenceTransformer(embedding_model)
         self.threshold = threshold
 

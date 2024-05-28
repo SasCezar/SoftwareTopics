@@ -3,6 +3,10 @@ from entity import Taxonomy
 
 
 class SimpleEnsemble(AbstractEnsemble):
+    def __init__(self):
+        self.name = 'simple'
+        self.params = {}
+
     def complete(self, taxonomy_a: Taxonomy, taxonomy_b: Taxonomy) -> Taxonomy:
         pairs_a = taxonomy_a.pairs
         pairs_b = taxonomy_b.pairs

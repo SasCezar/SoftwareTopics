@@ -108,43 +108,44 @@ def get_new_terms_intersections(taxonomies):
 
 @hydra.main(version_base='1.3', config_path="../conf", config_name="inter_eval")
 def inter_model_eval(cfg: DictConfig):
-    models = cfg.best_models
+    models = cfg.best.best_models
+    name = cfg.best.name
 
     taxonomies = {}
-    for name, path in models.items():
-        taxonomies[name] = Taxonomy.load(path)
+    for src, path in models.items():
+        taxonomies[src] = Taxonomy.load(path)
 
     res = []
     intersections = get_pair_intersections(taxonomies)
     intersections = [(x[0], x[1], 'Pairs', x[2]) for x in intersections]
     df = pd.DataFrame(intersections, columns=['Model1', 'Model2', 'Metric', 'Intersection'])
-    out_path = f'{Path(cfg.taxonomy_folder) / "pairs_intersections.csv"}'
+    out_path = f'{Path(cfg.taxonomy_folder) / f"pairs_intersections_{name}.csv"}'
     df.to_csv(out_path, index=False)
     res.append(df)
 
     intersections = get_terms_intersections(taxonomies)
     intersections = [(x[0], x[1], 'Gitranking', x[2]) for x in intersections]
     df = pd.DataFrame(intersections, columns=['Model1', 'Model2', 'Metric', 'Intersection'])
-    out_path = f'{Path(cfg.taxonomy_folder) / "terms_intersections.csv"}'
+    out_path = f'{Path(cfg.taxonomy_folder) / f"terms_intersections_{name}.csv"}'
     df.to_csv(out_path, index=False)
     res.append(df)
 
     intersections = get_new_terms_intersections(taxonomies)
     intersections = [(x[0], x[1], 'New Terms', x[2]) for x in intersections]
     df = pd.DataFrame(intersections, columns=['Model1', 'Model2', 'Metric', 'Intersection'])
-    out_path = f'{Path(cfg.taxonomy_folder) / "new_terms_intersections.csv"}'
+    out_path = f'{Path(cfg.taxonomy_folder) / f"new_terms_intersections_{name}.csv"}'
     df.to_csv(out_path, index=False)
     res.append(df)
 
     intersections = get_unmatched_intersections(taxonomies)
     intersections = [(x[0], x[1], 'Unmatched', x[2]) for x in intersections]
     df = pd.DataFrame(intersections, columns=['Model1', 'Model2', 'Metric', 'Intersection'])
-    out_path = f'{Path(cfg.taxonomy_folder) / "unmatched_intersections.csv"}'
+    out_path = f'{Path(cfg.taxonomy_folder) / f"unmatched_intersections_{name}.csv"}'
     df.to_csv(out_path, index=False)
     res.append(df)
 
     df = pd.concat(res)
-    df.to_csv(f'{Path(cfg.taxonomy_folder) / "intersections.csv"}', index=False)
+    df.to_csv(f'{Path(cfg.taxonomy_folder) / f"intersections_{name}.csv"}', index=False)
 
 
 if __name__ == '__main__':

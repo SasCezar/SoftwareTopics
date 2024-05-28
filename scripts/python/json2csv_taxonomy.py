@@ -4,7 +4,7 @@ from entity import Taxonomy
 
 
 def convert():
-    file_path = '/home/sasce/PycharmProjects/SoftwareTopics/src/pipeline/ensemble_output.json'
+    file_path = '/pipeline/ensemble_output_2.json'
     taxo = Taxonomy.load(file_path)
     df = pd.DataFrame(taxo.pairs, columns=['term', 'hypernym', 'src'])
     df.to_csv(file_path.replace('json', 'csv'), index=False)

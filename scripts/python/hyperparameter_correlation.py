@@ -32,8 +32,11 @@ def compute_correlations():
             df = df[(df['cycle'] + df['bridge'] + df['abstract'] + df['minimization']) <= 1]
 
             processing = ['cycle', 'bridge', 'abstract', 'minimization']
-            metrics = ["\# Nodes", "\# Edges", "\# Leafs", "\# Roots", "\# Bridges", "\# Intermediate", "\# Self Loops",
-                       "\# Cycles", "\#  CC", "Pairs Acc"]
+            metrics = {'nodes': '\# Nodes', 'edges': '\# Edges', 'roots': '\# Roots', 'leafs': '\# Leafs',
+                       'parents': '\# Parents', 'max_parents': 'Max Parents', 'children': '\# Children',
+                       'max_children': 'Max Children', 'bridges': '\# Bridges', 'inters': '\# Intermediate',
+                       'num_self_loops': '\# Self Loops', 'num_cycles': '\# Cycles', 'CC': '\#  CC',
+                       'DAG': 'Is DAG', 'new_terms': '\# New Terms'}.values()
             rows = []
             # measure the correlation between the metrics and the post-processing columns
             for metric in metrics:
