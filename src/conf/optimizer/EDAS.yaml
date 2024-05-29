@@ -1,0 +1,4 @@
+_target_: optimizer.mcdm.MCDMOptimizer
+name: EDAS
+algorithm:
+    _target_: pymcdm.methods.EDAS

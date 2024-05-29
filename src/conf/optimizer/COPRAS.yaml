@@ -1,0 +1,4 @@
+_target_: optimizer.mcdm.MCDMOptimizer
+name: COPRAS
+algorithm:
+  _target_: pymcdm.methods.COPRAS

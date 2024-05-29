@@ -2,7 +2,7 @@
 defaults:
   - _self_
   - paths: local
-  - optimizer: pareto
+  - optimizer: WASPAS
   - metrics: default
 
 output: ${taxonomy_folder}/ensemble/

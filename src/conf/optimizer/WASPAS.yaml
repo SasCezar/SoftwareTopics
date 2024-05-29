@@ -1,0 +1,4 @@
+_target_: optimizer.mcdm.MCDMOptimizer
+name: WASPAS
+algorithm:
+  _target_: pymcdm.methods.WASPAS

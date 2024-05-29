@@ -39,6 +39,10 @@ def rank(cfg: DictConfig):
         attributes = models_params[name]
         print(metric_file.parent.stem)
         if 'processed' in metric_file.parent.stem:
+            for e in exclude_pp:
+                print('Before', len(df))
+                df = df[df[e] == 0]
+                print('After', len(df))
             df.drop(columns=exclude_pp, inplace=True)
             attributes = models_params[name] + pp
 

@@ -1,0 +1,5 @@
+_target_: optimizer.mcdm.MCDMOptimizer
+name: TOPSIS
+algorithm:
+  _target_: pymcdm.methods.TOPSIS
+

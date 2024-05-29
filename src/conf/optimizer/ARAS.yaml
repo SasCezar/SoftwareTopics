@@ -1,0 +1,4 @@
+_target_: optimizer.mcdm.MCDMOptimizer
+name: ARAS
+algorithm:
+  _target_: pymcdm.methods.ARAS

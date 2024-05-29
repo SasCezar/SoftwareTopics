@@ -1,4 +1,4 @@
-name: default
+name: few
 metrics:
   - metric: '\# Roots'
     optimization: min
@@ -10,15 +10,6 @@ metrics:
     optimization: min
     weight: 1
   - metric: '\# Self Loops'
-    optimization: min
-    weight: 1
-  - metric: '\# Parents'
-    optimization: min
-    weight: 1
-  - metric: '\# Children'
-    optimization: max
-    weight: 1
-  - metric: '\# Edges'
     optimization: min
     weight: 1
   - metric: '\# Bridges'

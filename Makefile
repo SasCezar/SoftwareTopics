@@ -1,4 +1,4 @@
-PYTHON=/home/sasce/anaconda3/envs/SoftwareTopics/bin/python
+PYTHON=/home/sasce/.cache/pypoetry/virtualenvs/softwaretopics-k-hmEQ_C-py3.11/bin/python
 export PYTHONPATH := ${PYTHONPATH}:src/
 
 complete_wiki:
@@ -38,7 +38,7 @@ inter_model:
 evaluate: evaluate_taxonomies inter_model
 
 hyper_optimization:
-	${PYTHON} src/pipeline/hyperparameter_optimization.py -m optimizer=pareto,scoring metrics=default
+	${PYTHON} src/pipeline/hyperparameter_optimization.py -m optimizer=pareto,scoring,WASPAS,ARAS,COCOSO,CODAS,COPRAS,EDAS,VIKOR metrics=default,few
 
 
 # R scripts for plots in the paper
