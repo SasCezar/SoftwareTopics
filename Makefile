@@ -37,6 +37,9 @@ inter_model:
 
 evaluate: evaluate_taxonomies inter_model
 
+hyper_optimization:
+	${PYTHON} src/pipeline/hyperparameter_optimization.py -m optimizer=pareto,scoring metrics=default
+
 
 # R scripts for plots in the paper
 #
@@ -56,4 +59,4 @@ evaluate: evaluate_taxonomies inter_model
 #	Rscript scripts/R/.R
 #
 
-plots:
+plots: metrics

@@ -1,16 +1,15 @@
-from abc import ABC
 from typing import Dict
 
 from pandas import DataFrame
-from paretoset import paretoset
 
 from optimizer.optimizer import AbstractOptimizer
 
 
-class ParetoOptimizer(AbstractOptimizer):
-    def __init__(self):
+class MCDMOptimizer(AbstractOptimizer):
+    def __init__(self, name, algorithm):
         super().__init__()
-        self.name = 'Pareto'
+        self.name = f'MCDM_{name}'
+        self.algorithm = algorithm
 
     def optimize(self, samples: DataFrame, metrics: Dict, attributes):
         df = samples[samples['Metric'].isin(metrics.keys())]
@@ -21,11 +20,7 @@ class ParetoOptimizer(AbstractOptimizer):
             columns='Metric'
         )
         df = df.reset_index()
-        df_pareto = df.drop(columns=attributes)
+        df_solve = df.drop(columns=attributes)
 
-        senses = [metrics[col]['optimization'] for col in df_pareto.columns]
-        mask = paretoset(df_pareto, sense=senses)
-        df['Pareto'] = mask
-        df = df[df['Pareto']]
-        print(sum(mask))
-        return df
+        self.algorithm()
+

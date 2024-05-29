@@ -4,6 +4,7 @@ import hydra
 import pandas as pd
 from hydra.utils import instantiate
 from omegaconf import DictConfig
+from tqdm import tqdm
 
 from optimizer.optimizer import AbstractOptimizer
 
@@ -17,14 +18,14 @@ def rank(cfg: DictConfig):
                      'LLM': ['LLM', 'prompt_type'],
                      'wikidata': ['Take_All', 'Types_Threshold', 'Max_Depth']}
 
-    pp = ['cycle', 'bridge', 'abstract', 'minimization']
+    pp_og = ['cycle', 'bridge', 'abstract', 'minimization']
     exclude_pp = ['minimization']
-    pp = [x for x in pp if x not in exclude_pp]
+    pp = [x for x in pp_og if x not in exclude_pp]
 
     optimizer: AbstractOptimizer = instantiate(cfg.optimizer)
 
-    metrics = {c.name: {'optimization': c.optimization, 'weight': c.weight} for c in cfg.metrics}
-    for folder in folders:
+    metrics = {c.metric: {'optimization': c.optimization, 'weight': c.weight} for c in cfg.metrics.metrics}
+    for folder in tqdm(folders):
         metric_file = folder / 'melted_metrics.csv'
         name = folder.stem.split('_')[0]
         if '-' in name:
@@ -36,16 +37,17 @@ def rank(cfg: DictConfig):
         df = pd.read_csv(metric_file)
 
         attributes = models_params[name]
-        if 'postprocessing' in metric_file.stem:
+        print(metric_file.parent.stem)
+        if 'processed' in metric_file.parent.stem:
             df.drop(columns=exclude_pp, inplace=True)
-            attributes += pp
+            attributes = models_params[name] + pp
 
         res = optimizer.optimize(df, metrics, attributes)
 
-        res.to_csv(folder / f'ranked_models_{optimizer.name}.csv', index=False)
+        res.to_csv(folder / f'ranked_models_{optimizer.name}_{cfg.metrics.name}.csv', index=False)
         res['Ranking'] = range(1, len(res) + 1)
         res = res[['Ranking'] + list(res.columns[:-1])]
-        res.head(n=10).to_latex(folder / f'ranked_models_{optimizer.name}.tex', index=False,
+        res.head(n=10).to_latex(folder / f'ranked_models_{optimizer.name}_{cfg.metrics.name}.tex', index=False,
                                 float_format="{:.2f}".format)
 
 
