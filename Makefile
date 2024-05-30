@@ -1,5 +1,6 @@
 PYTHON=/home/sasce/.cache/pypoetry/virtualenvs/softwaretopics-k-hmEQ_C-py3.11/bin/python
 export PYTHONPATH := ${PYTHONPATH}:src/
+export HYDRA_FULL_ERROR=1
 
 complete_wiki:
 	${PYTHON} src/pipeline/complete_taxonomy.py -m completion=wikidata completion.take_all=False completion.type_threshold=0,3,5,10 completion.max_depth=2,3,4 hydra.launcher.n_jobs=1

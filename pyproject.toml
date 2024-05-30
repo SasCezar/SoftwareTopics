@@ -31,6 +31,7 @@ torchmetrics = "^1.4.0"
 rapidfuzz = "^3.9"
 paretoset = "^1.2.3"
 pymcdm = "^1.2.1"
+pingouin = "^0.5.4"
 
 [tool.poetry.group.dev.dependencies]
 notebook = "^6.5.4"

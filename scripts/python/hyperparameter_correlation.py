@@ -1,12 +1,15 @@
 from pathlib import Path
 
+import hydra
 import pandas as pd
 import pingouin as pg
+from omegaconf import DictConfig
 from tqdm import tqdm
 
 
-def compute_correlations():
-    path = Path('../../data/interim/taxonomy')
+@hydra.main(version_base='1.3', config_path="../../src/conf", config_name="complete_taxonomy")
+def compute_correlations(cfg: DictConfig):
+    path = Path(cfg.taxonomy_folder)
     folders = [folder for folder in path.iterdir() if folder.is_dir()]
 
     for folder in folders:

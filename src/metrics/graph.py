@@ -87,7 +87,7 @@ class GraphMetrics:
         Compute structure metrics for a graph. The metrics are:
         - Number of self loops
         - Number of cycles
-        - Number of weakly connected components
+        - Number of connected components
         - Is Directed Acyclic Graph
         :param graph:
         :return:
@@ -99,7 +99,7 @@ class GraphMetrics:
         logger.info(f"Computing cycles")
         n_cycles = len(list(nx.simple_cycles(graph))) if graph.number_of_nodes() < 1000 else len(
             list(nx.simple_cycles(graph, length_bound=30)))
-        logger.info(f"Computing weakly connected components")
+        logger.info(f"Computing number connected components")
         cc = nx.number_weakly_connected_components(graph)
         logger.info(f"Computing is DAG")
         is_dag = nx.is_directed_acyclic_graph(graph)

@@ -11,7 +11,7 @@ library(purrr)
 df_cso <- read.csv('~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/cso_processed/melted_metrics.csv')
 
 
-target <-c("\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc", '\\# New Terms')
+target <-c("\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc", '\\# New Terms', "\\# Parents", "\\# Children")
 
 df_cso <- df_cso %>% 
   filter(Metric %in% target) %>%
@@ -19,7 +19,7 @@ df_cso <- df_cso %>%
   mutate(LLM = replace(LLM, LLM == 'all-mpnet-base-v2', 'MP')) %>%
   mutate(LLM = replace(LLM, LLM == 'all-MiniLM-L6-v2', 'L6')) %>%
   unite("processing", cycle:bridge:abstract:minimization, remove = FALSE, sep=', ') %>%
-  mutate(Metric = fct_relevel(Metric, "\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc", '\\# New Terms', "Missing")) %>%
+  mutate(Metric = fct_relevel(Metric, "\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc", '\\# New Terms', "Missing", "\\# Parents", "\\# Children")) %>%
   mutate(Metric = gsub(r"(\\)", "", Metric)) %>%
   filter(processing %in% c('0, 0, 0, 0')) %>%
   select(-c('processing', 'cycle', 'bridge', 'abstract', 'minimization')) %>%
@@ -37,7 +37,6 @@ df_wiki <- df_wiki %>%
   filter(Metric %in% target) %>%
   mutate_at(c('Value'), as.numeric) %>%
   unite("processing", cycle:bridge:abstract:minimization, remove = FALSE, sep=', ') %>%
-  mutate(Metric = fct_relevel(Metric, "\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc", '\\# New Terms', "Missing")) %>%
   mutate(Metric = gsub(r"(\\)", "", Metric)) %>%
   filter(processing %in% c('0, 0, 0, 0')) %>%
   select(-c('processing', 'cycle', 'bridge', 'abstract', 'minimization')) %>%
@@ -52,7 +51,6 @@ df_llm <- read.csv('~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/LLM_p
 df_llm <- df_llm %>% 
   filter(Metric %in% target) %>%
   unite("processing", cycle:bridge:abstract:minimization, remove = FALSE, sep=', ') %>%
-  mutate(Metric = fct_relevel(Metric, "\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc", '\\# New Terms', "Missing")) %>%
   mutate(Metric = gsub(r"(\\)", "", Metric)) %>%
   mutate_at(c('Value'), as.numeric) %>%
   filter(processing %in% c('0, 0, 0, 0')) %>%
@@ -67,7 +65,6 @@ df_llm_iter <- read.csv('~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/
 df_llm_iter <- df_llm_iter %>% 
   filter(Metric %in% target) %>%
   unite("processing", cycle:bridge:abstract:minimization, remove = FALSE, sep=', ') %>%
-  mutate(Metric = fct_relevel(Metric, "\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc", '\\# New Terms', "Missing")) %>%
   mutate(Metric = gsub(r"(\\)", "", Metric)) %>%
   mutate_at(c('Value'), as.numeric) %>%
   filter(processing %in% c('0, 0, 0, 0')) %>%
@@ -86,24 +83,9 @@ df <- rbind(df, df_llm)
 df <- rbind(df, df_llm_iter)
 
 df <- df %>%
-  mutate(src = fct_relevel(src, 'CSO', 'Wiki', 'LLM', 'LLM_Iter'))
-
-df_corr <- read.csv(paste(dir, x, '_processed/metrics_correlation.csv', sep = ""))
+  mutate(src = fct_relevel(src, 'CSO', 'Wiki', 'LLM', 'LLM_Iter')) %>%
+  mutate(Metric = fct_relevel(Metric, "\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc", '\\# New Terms', "Missing", "\\# Parents", "\\# Children")) 
   
-df_corr <- df_corr %>%
-    rename(
-      Metric = X,
-      Hyper = Y     
-      ) %>%
-    filter(Metric %in% x_vars) %>%
-    filter(! Hyper %in% x_vars) %>%
-    mutate(across(where(is.numeric), round, 2))
-
-df_mean = df %>%
-    group_by(Metric, src) %>%
-    summarize(Mean = mean(Value, na.rm=TRUE)) %>%
-    mutate(across(where(is.numeric), round, 2)) 
-
 ggplot() +
     geom_boxplot(data=df, aes(y=Value, x=src, fill=src), alpha=0.4, outliers = FALSE) + 
     facet_wrap(~Metric, scale="free") +
