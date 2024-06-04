@@ -31,7 +31,7 @@ def format_params(param):
 @hydra.main(version_base='1.3', config_path="../conf", config_name="complete_taxonomy")
 def compute_metrics(cfg: DictConfig):
     path = Path(cfg.taxonomy_folder)
-    folders = [x for x in path.iterdir() if x.is_dir() and 'ensemble' not in x.stem] # and 'Patch' not in x.stem]
+    folders = [x for x in path.iterdir() if x.is_dir() and 'ensemble' not in x.stem]  # and 'Patch' not in x.stem]
     pairs_pred_path = f'{cfg.data}/result/pairs_llm_results.csv'
     eval_functions = [GraphMetrics(), SemanticMetrics(pairs_pred_path=pairs_pred_path),
                       OtherMetrics(Path(cfg.raw_data) / 'mean_std_ranking.csv')]
@@ -40,7 +40,7 @@ def compute_metrics(cfg: DictConfig):
     for function in eval_functions:
         metrics_rename.update(function.columns_rename)
 
-    for folder in folders[:1]:
+    for folder in folders:
         files = [x for x in folder.iterdir() if x.suffix == '.json']
         metrics = []
         for file in tqdm(files, desc=folder.stem):
@@ -68,9 +68,6 @@ def compute_metrics(cfg: DictConfig):
 
         df = pd.DataFrame(metrics)
         sort_columns = list(format_params(taxonomy.other['params']).keys())
-        # print('Folder', folder.stem)
-        # print('Sort', sort_columns)
-        # print('DF', df.head())
         df.sort_values(by=sort_columns, ascending=True, inplace=True)
 
         if 'Sim Threshold' in df.columns:

@@ -116,36 +116,39 @@ def inter_model_eval(cfg: DictConfig):
         taxonomies[src] = Taxonomy.load(path)
 
     res = []
+    out_dir = Path(cfg.interim_data)/ 'inter_models_eval'
+    out_dir.mkdir(exist_ok=True, parents=True)
+
     intersections = get_pair_intersections(taxonomies)
     intersections = [(x[0], x[1], 'Pairs', x[2]) for x in intersections]
     df = pd.DataFrame(intersections, columns=['Model1', 'Model2', 'Metric', 'Intersection'])
-    out_path = f'{Path(cfg.taxonomy_folder) / f"pairs_intersections_{name}.csv"}'
+    out_path = f'{out_dir / f"pairs_intersections_{name}.csv"}'
     df.to_csv(out_path, index=False)
     res.append(df)
 
     intersections = get_terms_intersections(taxonomies)
     intersections = [(x[0], x[1], 'Gitranking', x[2]) for x in intersections]
     df = pd.DataFrame(intersections, columns=['Model1', 'Model2', 'Metric', 'Intersection'])
-    out_path = f'{Path(cfg.taxonomy_folder) / f"terms_intersections_{name}.csv"}'
+    out_path = f'{out_dir / f"terms_intersections_{name}.csv"}'
     df.to_csv(out_path, index=False)
     res.append(df)
 
     intersections = get_new_terms_intersections(taxonomies)
     intersections = [(x[0], x[1], 'New Terms', x[2]) for x in intersections]
     df = pd.DataFrame(intersections, columns=['Model1', 'Model2', 'Metric', 'Intersection'])
-    out_path = f'{Path(cfg.taxonomy_folder) / f"new_terms_intersections_{name}.csv"}'
+    out_path = f'{out_dir / f"new_terms_intersections_{name}.csv"}'
     df.to_csv(out_path, index=False)
     res.append(df)
 
     intersections = get_unmatched_intersections(taxonomies)
     intersections = [(x[0], x[1], 'Unmatched', x[2]) for x in intersections]
     df = pd.DataFrame(intersections, columns=['Model1', 'Model2', 'Metric', 'Intersection'])
-    out_path = f'{Path(cfg.taxonomy_folder) / f"unmatched_intersections_{name}.csv"}'
+    out_path = f'{out_dir / f"unmatched_intersections_{name}.csv"}'
     df.to_csv(out_path, index=False)
     res.append(df)
 
     df = pd.concat(res)
-    df.to_csv(f'{Path(cfg.taxonomy_folder) / f"intersections_{name}.csv"}', index=False)
+    df.to_csv(f'{out_dir / f"intersections_{name}.csv"}', index=False)
 
 
 if __name__ == '__main__':

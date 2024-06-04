@@ -7,11 +7,12 @@ library(paletteer)
 library(forcats)
 library(cowplot)
 library(purrr)
+library(scales)
 
 df_cso <- read.csv('~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/cso_processed/melted_metrics.csv')
 
 
-target <-c("\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc", '\\# New Terms', "\\# Parents", "\\# Children")
+target <- c("\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc", '\\# New Terms', "\\# Parents", "\\# Children", 'Density', 'Avg Eccentricity', 'Diameter', 'Max Parents', 'Max Children', "\\# Abstract")
 
 df_cso <- df_cso %>% 
   filter(Metric %in% target) %>%
@@ -19,7 +20,6 @@ df_cso <- df_cso %>%
   mutate(LLM = replace(LLM, LLM == 'all-mpnet-base-v2', 'MP')) %>%
   mutate(LLM = replace(LLM, LLM == 'all-MiniLM-L6-v2', 'L6')) %>%
   unite("processing", cycle:bridge:abstract:minimization, remove = FALSE, sep=', ') %>%
-  mutate(Metric = fct_relevel(Metric, "\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc", '\\# New Terms', "Missing", "\\# Parents", "\\# Children")) %>%
   mutate(Metric = gsub(r"(\\)", "", Metric)) %>%
   filter(processing %in% c('0, 0, 0, 0')) %>%
   select(-c('processing', 'cycle', 'bridge', 'abstract', 'minimization')) %>%
@@ -84,13 +84,26 @@ df <- rbind(df, df_llm_iter)
 
 df <- df %>%
   mutate(src = fct_relevel(src, 'CSO', 'Wiki', 'LLM', 'LLM_Iter')) %>%
-  mutate(Metric = fct_relevel(Metric, "\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc", '\\# New Terms', "Missing", "\\# Parents", "\\# Children")) 
+  mutate(Metric = replace(Metric, Metric == '#  CC', 'Components')) %>%
+  mutate(Metric = factor(Metric, c("# Nodes", "# Edges", "# Leafs", "# Roots", "# Bridges",  "# Intermediate", "# Self Loops", "# Cycles", "Components", "Pairs Acc", '# New Terms', "# Parents", "# Children",  'Max Parents', 'Max Children', 'Density', 'Avg Eccentricity', 'Diameter',  "# Abstract")))
   
 ggplot() +
     geom_boxplot(data=df, aes(y=Value, x=src, fill=src), alpha=0.4, outliers = FALSE) + 
-    facet_wrap(~Metric, scale="free") +
+    facet_wrap(~ Metric, scale="free") +
+    scale_y_facet(
+      Metric == "# Cycles",
+      trans  = "log10",
+      breaks = breaks_log(),
+      labels = label_log()
+  ) +
+  scale_y_facet(
+    Metric == "Avg Eccentricity",
+    trans  = "log10",
+    breaks = breaks_log(),
+    labels = label_log()
+  ) +
     guides(fill="none") +
-    labs(x=element_blank(), y='Values')
+    labs(x=element_blank(), y='Values') 
   
 
 ggsave('~/PycharmProjects/SoftwareTopics/report/plots/models_metrics_distr.pdf', width=9, height=4)
