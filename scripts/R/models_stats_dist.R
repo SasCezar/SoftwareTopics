@@ -12,7 +12,11 @@ library(scales)
 df_cso <- read.csv('~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/cso_processed/melted_metrics.csv')
 
 
-target <- c("\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc", '\\# New Terms', "\\# Parents", "\\# Children", 'Density', 'Avg Eccentricity', 'Diameter', 'Max Parents', 'Max Children', "\\# Abstract")
+
+#target <- c("\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc", '\\# New Terms', "\\# Parents", "\\# Children", 'Density', 'Avg Eccentricity', 'Diameter', 'Max Parents', 'Max Children', "Avg Depth")
+
+target <- c("\\# Nodes", '\\# New Terms', '\\# Unlinked', "\\# Edges", 'Density',  "\\# Roots", "\\# Leaves", "Avg Parents", "Avg Children", 'Max Parents', 'Max Children', "Avg Depth", 'Diameter' ,"\\# Components", "\\# Loops", "\\# Cycles")
+
 
 df_cso <- df_cso %>% 
   filter(Metric %in% target) %>%
@@ -85,8 +89,12 @@ df <- rbind(df, df_llm_iter)
 df <- df %>%
   mutate(src = fct_relevel(src, 'CSO', 'Wiki', 'LLM', 'LLM_Iter')) %>%
   mutate(Metric = replace(Metric, Metric == '#  CC', 'Components')) %>%
-  mutate(Metric = factor(Metric, c("# Nodes", "# Edges", "# Leafs", "# Roots", "# Bridges",  "# Intermediate", "# Self Loops", "# Cycles", "Components", "Pairs Acc", '# New Terms', "# Parents", "# Children",  'Max Parents', 'Max Children', 'Density', 'Avg Eccentricity', 'Diameter',  "# Abstract")))
-  
+  mutate(Metric = factor(Metric, 
+                         c("# Nodes", '# New Terms', '# Unlinked', "# Edges", 'Density',  "# Roots", "# Leaves", "Avg Parents", 'Max Parents', "Avg Children", 'Max Children', "Avg Depth", 'Diameter' ,"# Components", "# Loops", "# Cycles")))
+         
+#c("# Nodes", "# Edges", "# Leafs", "# Roots", "# Bridges",  "# Intermediate", "# Self Loops", "# Cycles", "Components", "Pairs Acc", '# New Terms', "# Parents", "# Children",  'Max Parents', 'Max Children', 'Density', 'Avg Eccentricity',  'Avg Depth', 'Diameter'))
+
+
 ggplot() +
     geom_boxplot(data=df, aes(y=Value, x=src, fill=src), alpha=0.4, outliers = FALSE) + 
     facet_wrap(~ Metric, scale="free") +
@@ -96,16 +104,10 @@ ggplot() +
       breaks = breaks_log(),
       labels = label_log()
   ) +
-  scale_y_facet(
-    Metric == "Avg Eccentricity",
-    trans  = "log10",
-    breaks = breaks_log(),
-    labels = label_log()
-  ) +
     guides(fill="none") +
     labs(x=element_blank(), y='Values') 
   
 
-ggsave('~/PycharmProjects/SoftwareTopics/report/plots/models_metrics_distr.pdf', width=9, height=4)
+ggsave('~/PycharmProjects/SoftwareTopics/report/plots/models_metrics_distr.pdf', width=9, height=6)
 
 

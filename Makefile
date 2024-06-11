@@ -26,7 +26,7 @@ complete_all: complete_wiki complete_cso complete_llm complete_llm_iter
 complete: complete_all postprocess
 
 ensemble:
-	${PYTHON} src/pipeline/ensemble_taxonomies.py -m 'ensemble=cascade,simple,disambiguate'
+	${PYTHON} src/pipeline/ensemble_taxonomies.py -m ensemble=cascade,simple,disambiguate best=hand_pick,score,topsis
 
 # Evaluation
 evaluate_taxonomies:
@@ -39,7 +39,7 @@ inter_model:
 evaluate: evaluate_taxonomies inter_model
 
 hyper_optimization:
-	${PYTHON} src/pipeline/hyperparameter_optimization.py -m optimizer=pareto,scoring,WASPAS,ARAS,COCOSO,CODAS,COPRAS,EDAS,VIKOR metrics=default,few
+	${PYTHON} src/pipeline/hyperparameter_optimization.py -m optimizer=pareto,scoring,WASPAS,ARAS,COCOSO,CODAS,COPRAS,EDAS,TOPSIS metrics=default,few,paper
 
 
 # R scripts for plots in the paper

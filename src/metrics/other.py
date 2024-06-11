@@ -30,7 +30,7 @@ class OtherMetrics:
             A dictionary containing the computed metrics.
         """
         if 'num_removed' in taxonomy.post_process:
-            return {'abstarct': taxonomy.post_process['num_removed']}
+            return {'abstarct': len(taxonomy.post_process['removed_ancestors'])}
         t = self.abstract.process(taxonomy)
-        num_abstract = t.post_process['num_removed']
+        num_abstract = len(t.post_process['removed_ancestors'])
         return {'abstarct': num_abstract}

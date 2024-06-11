@@ -19,7 +19,7 @@ def rank(cfg: DictConfig):
                      'wikidata': ['Take_All', 'Types_Threshold', 'Max_Depth']}
 
     pp_og = ['cycle', 'bridge', 'abstract', 'minimization']
-    exclude_pp = ['minimization']
+    exclude_pp = ['minimization', 'bridge']
     pp = [x for x in pp_og if x not in exclude_pp]
 
     optimizer: AbstractOptimizer = instantiate(cfg.optimizer)

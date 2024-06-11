@@ -11,7 +11,9 @@ library(stringr)
 
 df <- read.csv('~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/wikidata_processed/metrics_correlation.csv')
 
-x_vars <- c("\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc", '\\# New Terms')
+x_vars <-  c("\\# Nodes", '\\# New Terms', '\\# Unlinked', "\\# Edges", 'Density',  "\\# Roots", "\\# Leaves", "Avg Parents", "Avg Children", 'Max Parents', 'Max Children', "Avg Depth", 'Diameter' ,"\\# Components", "\\# Loops", "\\# Cycles")
+
+#c("\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc", '\\# New Terms')
 hyper <- c("Take All", 'Max Depth', "LLM", 'Sim Threshold', 'Types Threshold')
 
 df <- df %>%

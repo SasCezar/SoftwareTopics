@@ -9,7 +9,6 @@ from tqdm import tqdm
 
 from entity import Taxonomy
 from metrics import GraphMetrics, SemanticMetrics
-from metrics.other import OtherMetrics
 
 
 def format_params(param):
@@ -33,10 +32,10 @@ def compute_metrics(cfg: DictConfig):
     path = Path(cfg.taxonomy_folder)
     folders = [x for x in path.iterdir() if x.is_dir() and 'ensemble' not in x.stem]  # and 'Patch' not in x.stem]
     pairs_pred_path = f'{cfg.data}/result/pairs_llm_results.csv'
-    eval_functions = [GraphMetrics(), SemanticMetrics(pairs_pred_path=pairs_pred_path),
-                      OtherMetrics(Path(cfg.raw_data) / 'mean_std_ranking.csv')]
+    eval_functions = [GraphMetrics(), SemanticMetrics(pairs_pred_path=pairs_pred_path)]
+
     metrics_rename = {}
-    taxo_stats = {'num_unique_missing': 'Missing'}
+    taxo_stats = {'num_unique_missing': '\# Unlinked'}
     for function in eval_functions:
         metrics_rename.update(function.columns_rename)
 

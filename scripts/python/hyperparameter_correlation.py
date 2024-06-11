@@ -35,11 +35,12 @@ def compute_correlations(cfg: DictConfig):
             df = df[(df['cycle'] + df['bridge'] + df['abstract'] + df['minimization']) <= 1]
 
             processing = ['cycle', 'bridge', 'abstract', 'minimization']
-            metrics = {'nodes': '\# Nodes', 'edges': '\# Edges', 'roots': '\# Roots', 'leafs': '\# Leafs',
-                       'parents': '\# Parents', 'max_parents': 'Max Parents', 'children': '\# Children',
+            metrics = {'nodes': '\# Nodes', 'edges': '\# Edges', 'roots': '\# Roots', 'leaves': '\# Leaves',
+                       'parents': 'Avg Parents', 'max_parents': 'Max Parents', 'children': 'Avg Children',
                        'max_children': 'Max Children', 'bridges': '\# Bridges', 'inters': '\# Intermediate',
-                       'num_self_loops': '\# Self Loops', 'num_cycles': '\# Cycles', 'CC': '\#  CC',
-                       'DAG': 'Is DAG', 'new_terms': '\# New Terms'}.values()
+                       'num_self_loops': '\# Loops', 'num_cycles': '\# Cycles', 'CC': '\# Components',
+                       'DAG': 'Is DAG', 'new_terms': '\# New Terms', 'density': 'Density',
+                       'max_depth': 'Diameter', 'avg_depth': 'Avg Depth', 'num_unique_missing': '\# Unlinked'}.values()
             rows = []
             # measure the correlation between the metrics and the post-processing columns
             for metric in metrics:

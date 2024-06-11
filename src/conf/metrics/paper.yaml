@@ -1,0 +1,23 @@
+name: paper
+metrics:
+  - metric: '\# New Terms'
+    optimization: min
+    weight: 1
+  - metric: 'Unlinked'
+    optimization: min
+    weight: 1
+  - metric: 'Density'
+    optimization: min
+    weight: 1
+  - metric: '\# Roots'
+    optimization: min
+    weight: 1
+  - metric: 'Diameter'
+    optimization: min
+    weight: 1
+  - metric: '\# Components'
+    optimization: min
+    weight: 1
+  - metric: '\# Cycles'
+    optimization: min
+    weight: 1
