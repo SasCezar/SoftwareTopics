@@ -6,7 +6,6 @@ from langchain_community.cache import SQLiteCache
 from langchain_core.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 from loguru import logger
-from more_itertools import flatten
 from tqdm import tqdm
 
 from completion.completion import AbstractCompletion

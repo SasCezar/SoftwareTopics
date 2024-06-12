@@ -54,7 +54,7 @@ for(x in ds){
     geom_boxplot(data=df, aes(y=Value, x=is_pp, fill=is_pp), alpha=0.4) + 
     geom_label(data=df_corr, aes(label=correlation), x=1.5, y=.9, size=2.8) +
     geom_label(data=df_mean, aes(x=is_pp, label=Mean, fill=is_pp), y=.1, size=2.5, alpha=.4) +
-    facet_wrap(pp_name ~ Metric, scales = "free") + 
+    facet_wrap( ~ pp_name + Metric, ncol = 5) + 
     guides(fill="none") +
     labs(x='Postprocessing', y='Normalized Values')
   

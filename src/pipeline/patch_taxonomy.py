@@ -1,4 +1,3 @@
-import copy
 from pathlib import Path
 
 import hydra
@@ -6,7 +5,6 @@ from hydra.utils import instantiate
 from loguru import logger
 from omegaconf import DictConfig
 
-from entity.gitranking import GitRanking
 from entity.taxonomy import Taxonomy
 
 
@@ -23,7 +21,7 @@ def path_taxonomy(taxonomy_path, completion_method, cfg):
     path = Path(f'{cfg.interim_data}/taxonomy/{name}')
     path.mkdir(parents=True, exist_ok=True)
     print(path)
-    out_path = path / f'patched_gitranking_{name}_{params}.json'
+    out_path =  Path(f'./patched_gitranking_ensemble_patched_{cfg.ensemble}_{cfg.best}_{params}.json')
     if out_path.with_suffix('.json').exists() or cfg.redo:
         logger.info(f"Skipping {out_path} - already exists or redo is set to True")
         return
