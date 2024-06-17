@@ -2,5 +2,6 @@
 base: /home/sasce/PycharmProjects/SoftwareTopics
 data: ${base}/data
 raw_data: ${data}/raw
+result: ${data}/result
 interim_data: ${data}/interim
 taxonomy_folder: ${interim_data}/taxonomy

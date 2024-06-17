@@ -9,7 +9,7 @@ normalit<-function(m){
   (m - min(m))/(max(m)-min(m))
 }
 
-x_vars <-  c("\\# Nodes", '\\# New Terms', '\\# Unlinked', "\\# Edges", 'Density',  "\\# Roots", "\\# Leaves", "Avg Parents", "Avg Children", 'Max Parents', 'Max Children', "Avg Depth", 'Diameter' ,"\\# Components", "\\# Loops", "\\# Cycles")
+x_vars <-  c("\\# Nodes", '\\# New Terms', '\\# Unlinked', "\\# Edges", 'Density',  "\\# Roots", "\\# Leaves", "Avg Parents", "Avg Children", 'Max Parents', 'Max Children', "Avg Depth", 'Diameter' ,"\\# Components", "\\# Loops", "\\# Cycles", "Is DAG")
 
 #c("\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Bridges",  "\\# Intermediate", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc")
 

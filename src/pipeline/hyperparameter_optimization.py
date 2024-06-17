@@ -12,11 +12,13 @@ from optimizer.optimizer import AbstractOptimizer
 @hydra.main(version_base='1.3', config_path="../conf", config_name="optimize")
 def rank(cfg: DictConfig):
     path = Path(cfg.taxonomy_folder)
-    folders = [x for x in path.iterdir() if x.is_dir() and 'ensemble' not in str(x)]
+    folders = [x for x in path.iterdir() if x.is_dir() and 'ensemble' not in str(x) and 'final' not in str(x)]
 
     models_params = {'cso': ['LLM', 'Sim_Threshold'],
                      'LLM': ['LLM', 'prompt_type'],
                      'wikidata': ['Take_All', 'Types_Threshold', 'Max_Depth']}
+    final = ['LLM', 'Sim_Threshold', 'prompt_type', 'Take_All', 'Types_Threshold', 'Max_Depth']
+    models_params['final'] = final
 
     pp_og = ['cycle', 'bridge', 'abstract', 'minimization']
     exclude_pp = ['minimization', 'bridge']
@@ -51,6 +53,7 @@ def rank(cfg: DictConfig):
         res.to_csv(folder / f'ranked_models_{optimizer.name}_{cfg.metrics.name}.csv', index=False)
         res['Ranking'] = range(1, len(res) + 1)
         res = res[['Ranking'] + list(res.columns[:-1])]
+        res = res.drop(columns=[x for x in res.columns if x not in models_params[name] + ['Ranking', 'Score'] + pp_og])
         res.head(n=10).to_latex(folder / f'ranked_models_{optimizer.name}_{cfg.metrics.name}.tex', index=False,
                                 float_format="{:.2f}".format)
 

@@ -15,7 +15,7 @@ df_cso <- read.csv('~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/cso_p
 
 #target <- c("\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc", '\\# New Terms', "\\# Parents", "\\# Children", 'Density', 'Avg Eccentricity', 'Diameter', 'Max Parents', 'Max Children', "Avg Depth")
 
-target <- c("\\# Nodes", '\\# New Terms', '\\# Unlinked', "\\# Edges", 'Density',  "\\# Roots", "\\# Leaves", "Avg Parents", "Avg Children", 'Max Parents', 'Max Children', "Avg Depth", 'Diameter' ,"\\# Components", "\\# Loops", "\\# Cycles")
+target <- c("\\# Nodes", '\\# New Terms', '\\# Unlinked', "\\# Edges", 'Density',  "\\# Roots", "\\# Leaves", "Avg Parents", "Avg Children", 'Max Parents', 'Max Children', "Avg Depth", 'Diameter' ,"\\# Components", "\\# Loops", "\\# Cycles", 'Is DAG')
 
 
 df_cso <- df_cso %>% 
@@ -90,7 +90,7 @@ df <- df %>%
   mutate(src = fct_relevel(src, 'CSO', 'Wiki', 'LLM', 'LLM_Iter')) %>%
   mutate(Metric = replace(Metric, Metric == '#  CC', 'Components')) %>%
   mutate(Metric = factor(Metric, 
-                         c("# Nodes", '# New Terms', '# Unlinked', "# Edges", 'Density',  "# Roots", "# Leaves", "Avg Parents", 'Max Parents', "Avg Children", 'Max Children', "Avg Depth", 'Diameter' ,"# Components", "# Loops", "# Cycles")))
+                         c("# Nodes", '# New Terms', '# Unlinked', "# Edges", 'Density',  "# Roots", "# Leaves", "Avg Parents", 'Max Parents', "Avg Children", 'Max Children', "Avg Depth", 'Diameter' ,"# Components", "# Loops", "# Cycles", 'Is DAG')))
          
 #c("# Nodes", "# Edges", "# Leafs", "# Roots", "# Bridges",  "# Intermediate", "# Self Loops", "# Cycles", "Components", "Pairs Acc", '# New Terms', "# Parents", "# Children",  'Max Parents', 'Max Children', 'Density', 'Avg Eccentricity',  'Avg Depth', 'Diameter'))
 

@@ -6,7 +6,7 @@ defaults:
 
 
 best: topsis
-ensemble: disambiguate
+ensemble: cascade
 
 taxonomy_path: ${taxonomy_folder}/ensemble/${ensemble}/${best}/gitranking_cso_llm_all-MiniLM-L6-v2_sim_t_0.8_cycle_gitranking_wikidata_take_all_False_type_threshold_0_max_depth_3_abstract_cycle.json
 redo: False
