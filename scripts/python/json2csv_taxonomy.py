@@ -41,7 +41,7 @@ def assign_annotators(annotators, df, k=3):
     return pred_w_annot
 
 
-def to_xlsl(df, filename):
+def to_xlsx(df, filename):
     with pd.ExcelWriter(filename) as writer:
         for group, data in df.groupby('annotator'):
             data.to_excel(writer, sheet_name=group, index=False)
@@ -54,4 +54,4 @@ if __name__ == '__main__':
     df = assign_annotators(num_annotators, df)
     df['is_correct'] = None
     df['wrong_term(s)'] = None
-    to_xlsl(df, file_path.replace('.json', '_annotation.xlsx'))
+    to_xlsx(df, file_path.replace('.json', '_annotation.xlsx'))
