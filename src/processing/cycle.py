@@ -37,7 +37,7 @@ class CycleRemovalProcessing(AbstractProcessing):
         logger.info(f"Number of removed edges: {len(removed)}")
         for loop_edge in removed:
             self.graph.remove_edge(*loop_edge)
-
+        assert nx.is_directed_acyclic_graph(self.graph)
         inverse_exists = [int(self.graph.has_edge(b, a)) for a, b in removed]
         percentage = sum(inverse_exists) / (len(inverse_exists)+1) * 100
         removed = [[a, b, z] for (a, b), z in zip(removed, inverse_exists)]

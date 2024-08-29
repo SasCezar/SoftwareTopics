@@ -15,11 +15,12 @@ df_cso <- read.csv('~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/cso_p
 
 #target <- c("\\# Nodes", "\\# Edges", "\\# Leafs", "\\# Roots", "\\# Self Loops", "\\# Cycles", "\\#  CC", "Pairs Acc", '\\# New Terms', "\\# Parents", "\\# Children", 'Density', 'Avg Eccentricity', 'Diameter', 'Max Parents', 'Max Children', "Avg Depth")
 
-target <- c("\\# Nodes", '\\# New Terms', '\\# Unlinked', "\\# Edges", 'Density',  "\\# Roots", "\\# Leaves", "Avg Parents", "Avg Children", 'Max Parents', 'Max Children', "Avg Depth", 'Diameter' ,"\\# Components", "\\# Loops", "\\# Cycles", 'Is DAG')
+target <- c("\\# Nodes", '\\# New Terms', '\\# Unlinked', "\\# Edges", 'Density',  "\\# Roots", "\\# Leaves", "Avg Parents", "Avg Children", 'Max Parents', 'Max Children', "Avg Depth", 'Diameter' ,"\\# Components", "\\# Loops", "\\# Cycles")
 
 
 df_cso <- df_cso %>% 
   filter(Metric %in% target) %>%
+  mutate(Metric = replace(Metric, Metric == "\\# New Terms", '\\# New Nodes')) %>%
   mutate_at(c('Sim_Threshold', 'Value'), as.numeric)%>%
   mutate(LLM = replace(LLM, LLM == 'all-mpnet-base-v2', 'MP')) %>%
   mutate(LLM = replace(LLM, LLM == 'all-MiniLM-L6-v2', 'L6')) %>%
@@ -39,6 +40,7 @@ df_wiki$Max_Depth <- as.factor(df_wiki$Max_Depth)
 
 df_wiki <- df_wiki %>% 
   filter(Metric %in% target) %>%
+  mutate(Metric = replace(Metric, Metric == "\\# New Terms", '\\# New Nodes')) %>%
   mutate_at(c('Value'), as.numeric) %>%
   unite("processing", cycle:bridge:abstract:minimization, remove = FALSE, sep=', ') %>%
   mutate(Metric = gsub(r"(\\)", "", Metric)) %>%
@@ -54,6 +56,7 @@ df_llm <- read.csv('~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/LLM_p
 
 df_llm <- df_llm %>% 
   filter(Metric %in% target) %>%
+  mutate(Metric = replace(Metric, Metric == "\\# New Terms", '\\# New Nodes')) %>%
   unite("processing", cycle:bridge:abstract:minimization, remove = FALSE, sep=', ') %>%
   mutate(Metric = gsub(r"(\\)", "", Metric)) %>%
   mutate_at(c('Value'), as.numeric) %>%
@@ -68,6 +71,7 @@ df_llm_iter <- read.csv('~/PycharmProjects/SoftwareTopics/data/interim/taxonomy/
 
 df_llm_iter <- df_llm_iter %>% 
   filter(Metric %in% target) %>%
+  mutate(Metric = replace(Metric, Metric == "\\# New Terms", '\\# New Nodes')) %>%
   unite("processing", cycle:bridge:abstract:minimization, remove = FALSE, sep=', ') %>%
   mutate(Metric = gsub(r"(\\)", "", Metric)) %>%
   mutate_at(c('Value'), as.numeric) %>%
@@ -90,7 +94,7 @@ df <- df %>%
   mutate(src = fct_relevel(src, 'CSO', 'Wiki', 'LLM', 'LLM_Iter')) %>%
   mutate(Metric = replace(Metric, Metric == '#  CC', 'Components')) %>%
   mutate(Metric = factor(Metric, 
-                         c("# Nodes", '# New Terms', '# Unlinked', "# Edges", 'Density',  "# Roots", "# Leaves", "Avg Parents", 'Max Parents', "Avg Children", 'Max Children', "Avg Depth", 'Diameter' ,"# Components", "# Loops", "# Cycles", 'Is DAG')))
+                         c("# Nodes", '# New Nodes', '# Unlinked', "# Edges", 'Density',  "# Roots", "# Leaves", "Avg Parents", 'Max Parents', "Avg Children", 'Max Children', "Avg Depth", 'Diameter' ,"# Components", "# Loops", "# Cycles", 'Is DAG')))
          
 #c("# Nodes", "# Edges", "# Leafs", "# Roots", "# Bridges",  "# Intermediate", "# Self Loops", "# Cycles", "Components", "Pairs Acc", '# New Terms', "# Parents", "# Children",  'Max Parents', 'Max Children', 'Density', 'Avg Eccentricity',  'Avg Depth', 'Diameter'))
 

@@ -40,6 +40,8 @@ def compute_metrics(cfg: DictConfig):
         metrics_rename.update(function.columns_rename)
 
     for folder in folders:
+        if 'temp' not in str(folder):
+            continue
         files = [x for x in folder.iterdir() if x.suffix == '.json']
         metrics = []
         for file in tqdm(files, desc=folder.stem):
@@ -50,7 +52,10 @@ def compute_metrics(cfg: DictConfig):
             pairs = [(x[0], x[1]) for x in taxonomy.pairs]
             g = nx.DiGraph()
             g.add_edges_from(pairs)
-            row = format_params(taxonomy.other['params'])
+            row = format_params(taxonomy.other['params']) if 'params' in taxonomy.other or not taxonomy.other else {'name': file.stem.split('_')[-1]}
+
+            row = {'name': file.stem.split('_')[-1]}
+            print(row)
             logger.info(f"Processing {file.stem}")
             if 'processed' in folder.stem:
                 pp.update(taxonomy.other['post_processing'])
@@ -66,8 +71,9 @@ def compute_metrics(cfg: DictConfig):
             metrics.append(row)
 
         df = pd.DataFrame(metrics)
-        sort_columns = list(format_params(taxonomy.other['params']).keys())
-        df.sort_values(by=sort_columns, ascending=True, inplace=True)
+        if 'params' in taxonomy.other:
+            sort_columns = list(format_params(taxonomy.other['params']).keys())
+            df.sort_values(by=sort_columns, ascending=True, inplace=True)
 
         if 'Sim Threshold' in df.columns:
             df['Sim Threshold'] = df['Sim Threshold'].astype(float)
@@ -89,20 +95,22 @@ def compute_metrics(cfg: DictConfig):
         df.to_csv(folder / 'metrics.csv', index=False)
 
         metrics_name = [x for x in metrics_rename.values() if x in df.columns]
-        header_order = list(format_params(taxonomy.other['params']).keys()) + pp_names + metrics_name
-        df.sort_values(by=list(format_params(taxonomy.other['params']).keys()) + pp_names, ascending=True,
+        if 'params' in taxonomy.other:
+            header_order = list(format_params(taxonomy.other['params']).keys()) + pp_names + metrics_name
+            df.sort_values(by=list(format_params(taxonomy.other['params']).keys()) + pp_names, ascending=True,
                        inplace=True)
 
-        df = df[header_order]
+            df = df[header_order]
         df.to_latex(folder / 'metrics.tex', index=False,
                     escape=False, float_format="{:.2f}".format,
                     header=['\\rot{{' + x + '}}' for x in df.columns])
 
-        id_vars = list(format_params(taxonomy.other['params']).keys()) + pp_names
-        header_rename = {x: str(x).replace(" ", "_") for x in id_vars}
-        df.rename(columns=header_rename, inplace=True)
+        if 'params' in taxonomy.other:
+            id_vars = list(format_params(taxonomy.other['params']).keys()) + pp_names
+            header_rename = {x: str(x).replace(" ", "_") for x in id_vars}
+            df.rename(columns=header_rename, inplace=True)
 
-        melted = df.melt(id_vars=header_rename.values(),
+        melted = df.melt(id_vars='name',
                          value_vars=metrics_name,
                          var_name='Metric', value_name='Value')
         melted.to_csv(folder / 'melted_metrics.csv', index=False)
