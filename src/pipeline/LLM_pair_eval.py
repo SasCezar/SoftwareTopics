@@ -29,8 +29,7 @@ def load_pairs():
 
 def evaluate(pairs):
     model = "gpt-4-1106-preview"
-    llm = ChatOpenAI(openai_api_key="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",
-                     model=model)
+    llm = ChatOpenAI(model=model)
 
     single_template = PromptTemplate.from_template("""
     You are a helpful assistant tasked to evaluate pairs of terms based on whether they are in a hypernym-hyponym relation. 

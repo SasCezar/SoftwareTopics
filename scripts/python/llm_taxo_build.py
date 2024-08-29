@@ -25,8 +25,7 @@ def main():
     taxonomy = load_taxonomy(taxonomy_path)
     model = "gpt-4-1106-preview"
     #model = "gpt-3.5-turbo"
-    llm = ChatOpenAI(openai_api_key="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",
-                     model=model)
+    llm = ChatOpenAI(model=model)
 
     single_template = PromptTemplate.from_template("""
     You are a helpful assistant tasked to pair terms to their hypernym it should belong. If it does not belong to any, answer ["None"]. 

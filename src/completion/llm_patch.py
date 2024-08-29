@@ -19,8 +19,7 @@ class LLMPatch(AbstractCompletion):
     def __init__(self, model, prompt_type):
         self.name = "LLM-Patch"
         self.model = model
-        self.llm = ChatOpenAI(model_name=model,
-                              openai_api_key='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')  # API key is looked up in the environment variables
+        self.llm = ChatOpenAI(model_name=model)  # API key is looked up in the environment variables
         set_llm_cache(SQLiteCache(database_path=".langchain.db"))
         self.prompt_type = prompt_type
         self.examples = []
