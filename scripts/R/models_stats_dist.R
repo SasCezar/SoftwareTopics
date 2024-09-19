@@ -101,7 +101,7 @@ df <- df %>%
 
 ggplot() +
     geom_boxplot(data=df, aes(y=Value, x=src, fill=src), alpha=0.4, outliers = FALSE) + 
-    facet_wrap(~ Metric, scale="free") +
+    facet_wrap2(~ Metric, scale="free_y", nrow=4) +
     scale_y_facet(
       Metric == "# Cycles",
       trans  = "log10",
@@ -109,9 +109,10 @@ ggplot() +
       labels = label_log()
   ) +
     guides(fill="none") +
-    labs(x=element_blank(), y='Values') 
+  labs(x =element_blank(), y = element_blank()) # +
+  #guides(x =  guide_axis(angle = 45)) 
   
 
-ggsave('~/PycharmProjects/SoftwareTopics/report/plots/models_metrics_distr.pdf', width=9, height=6)
+ggsave('~/PycharmProjects/SoftwareTopics/report/plots/models_metrics_distr.pdf', width=9, height=5)
 
 
